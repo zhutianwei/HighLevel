@@ -20,14 +20,6 @@ ObstacleAvoidance::ObstacleAvoidance(vector<float> lastData, vector<float> newDa
 
 }
 
-/*ObstacleAvoidance::ObstacleAvoidance(vector<float> in_data, int len) {
-	for (unsigned i = 0; i < in_data.size(); i++) {
-		this->data.push_back(in_data[i]);
-	}
-	makeGroups();
-
-}*/
-
 ObstacleAvoidance::~ObstacleAvoidance() {
 	data.clear();
 	newData.clear();
@@ -38,27 +30,15 @@ void ObstacleAvoidance::makeGroups() {
 	vector<float> oneGroup;
 	for (int i = 0; i < data.size(); i++) {
 		float value = std::abs(data[i - 1] - data[i] );
-		if (value < 2 || i == 0) {
+		if (value < 2 || i == 0) { // separates group if the difference between two consecutive data is 2 or higher
 			oneGroup.push_back(data[i]);
 		} else {
 			groups.push_back(oneGroup);
-			oneGroup.clear();
+			oneGroup.clear(); // clear for new group
 			oneGroup.push_back(data[i]);	
 		}
 	}
-	groups.push_back(oneGroup);
-	/*groupLength = length;
-	int i = 0;
-	while (i < data.size()) {
-		int j = 0;
-		vector<float> oneGroup;
-		while (j < groupLength) {
-			oneGroup.push_back(data[i]);
-			i++;
-			j++;
-		}
-		groups.push_back(oneGroup);
-	}*/
+	groups.push_back(oneGroup); // inserts the last group
 }
 
 vector<float> ObstacleAvoidance::getAGroup(int index) {

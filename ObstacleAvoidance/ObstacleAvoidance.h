@@ -24,8 +24,6 @@ class ObstacleAvoidance {
 		// lastData is the data before movement, newData is data in current position after movement
 		ObstacleAvoidance(vector<float> lastData, vector<float> newData);
 
-		ObstacleAvoidance(vector<float> in_data, int groupLength);
-
 		// destructor
 		virtual ~ObstacleAvoidance();
 		
@@ -33,10 +31,6 @@ class ObstacleAvoidance {
 		const vector<float> getData() {
 			return data;
 		}
-
-		/*int getGroupLength() {
-			return groupLength;
-		}*/		
 		
 		// makes groups of data from a big array of sensor data based on the provided length for the group
 		// it helps us to find clear passage on our way
@@ -78,7 +72,6 @@ class ObstacleAvoidance {
 		vector<float> data;
 		vector<float> newData;
 
-		int groupLength; // group length is the length of small arrays broken apart as groups from a big array of data from sensors. Only gets set when makeGroups method is called
 		vector<vector<float>> groups;
 
 };
