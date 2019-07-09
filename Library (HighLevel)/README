@@ -11,3 +11,4 @@ Links to Addition Libaries NEEDED from Adafruit!
  ****  In above file LSM303.cpp file, change ALL occurrences of Wire to Wire1 except for the initial include of <Wire.h>
   This is needed for the Magnetometer to work. ****
 
+5. due_can library https://github.com/atlas0fd00m/CanCat/blob/master/ext_libs/due_can/due_can.h
