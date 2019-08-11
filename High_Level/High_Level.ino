@@ -18,24 +18,31 @@ Waypoint estimated_position, old_position;
  * main setup method
  *****************************************************************************************************/
 void setup() {
-   if(DEBUG)Serial.println("origin is first set to :" + String(origin.latitude) + " " + String(origin.longitude));
+   if(DEBUG) Serial.println("origin is first set to :" + String(origin.latitude) + " " + String(origin.longitude));
  
    Serial.begin(9600);
+   
   //re-include if use serial again for raspberrypi or else
   //Serial2.begin(9600);
+  
   if (CAN.begin(CAN_BPS_500K)) { // initalize CAN with 500kbps baud rate 
     Serial.println("init success");
   }
- if(DEBUG)Serial.println("estimated_position before process = " + String(estimated_position.latitude));
+  
+ if(DEBUG) Serial.println("estimated_position before process = " + String(estimated_position.latitude));
  if(DEBUG) Serial.println("Starting Localization");
+ 
  myLocal = new Localization(origin, estimated_position, old_position);
- if(DEBUG)Serial.println("estimated_position = " + String(estimated_position.latitude));
+ 
+ if(DEBUG) Serial.println("estimated_position = " + String(estimated_position.latitude));
  if(DEBUG) Serial.println("Starting Pilot");
+ 
  myPilot = new Pilot(origin, estimated_position, old_position);
- if(DEBUG)Serial.print("origin after planner is now set to: ");
- if(DEBUG)Serial.print(origin.latitude, 6);
- if(DEBUG)Serial.print(" ");
- if(DEBUG)Serial.println(origin.longitude, 6);
+ 
+ if(DEBUG) Serial.print("origin after planner is now set to: ");
+ if(DEBUG) Serial.print(origin.latitude, 6);
+ if(DEBUG) Serial.print(" ");
+ if(DEBUG) Serial.println(origin.longitude, 6);
 }
 
 /******************************************************************************************************
@@ -43,9 +50,9 @@ void setup() {
  *****************************************************************************************************/
 void loop() {
   myLocal->update(origin, estimated_position, old_position);
-   if(DEBUG)Serial.println("estimated_position.eastmm = " + String(estimated_position.east_mm));
+   if(DEBUG) Serial.println("estimated_position.eastmm = " + String(estimated_position.east_mm));
+   
   //RE-compute path if too far off track (future development) for C4
-  
   myPilot->update(estimated_position, old_position);
 
   //path has been set to first mission cone, once reach it use planner in pilot

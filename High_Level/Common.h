@@ -5,9 +5,6 @@ namespace common {bool checksum(char* msg);}
 
 namespace elcano{
 
-
-
-
 class Origin
 {
 public:
@@ -75,27 +72,25 @@ class  Waypoint// best estimate of position and state
        
                                                                 //#endif
 };
+
 	void ComputePositionWithDR(Waypoint &oldData, Waypoint &newData);
 	void FindFuzzyCrossPointXY(Waypoint &gps, Waypoint &dr, Waypoint &estimated_position);
 	double CrossPointX(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4);
 	//Converts provided Longitude and Latitude to MM
 	//bool convertLatLonToMM(long latitude, long longitude);
 
-struct Curve
-{
+struct Curve {
   Curve    *previous;
   Waypoint *present;
   bool     Junction;
   Curve    *next;
 };
 
-struct Location_mm
-{
+struct Location_mm {
   long x, y;
 };
 
-struct Junction
-{
+struct Junction {
   long east_mm, north_mm;
   int destination[4];  
   // Where there are < 4 destinations, some pointers are NULL
@@ -110,6 +105,5 @@ struct Junction
   // to route[n]->present.
   // When a curve reached a juntion, Curve.next == NULL
 };
-
 
 }// namespace elcano

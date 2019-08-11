@@ -37,8 +37,8 @@ namespace common {
 		return false;
 	}
 }
-namespace elcano {
 
+namespace elcano {
 /*---------------------------------------------------------------------------------------*/
 //---------------------------------------------------------
 	long int parsedecimal(char *str) {
@@ -82,15 +82,12 @@ namespace elcano {
 		if (str[0] = ',')
 			str++;
 		return negative ? -whole : whole;
-
 	}
-
 
 	void DataReady()  // called from an interrupt
 	{
 		DataAvailable = true;
 	}
-
 //---------------------------------------------------------
 	void writeline(int channel) {
 		switch (channel) {
@@ -109,7 +106,6 @@ namespace elcano {
 		}
 
 	}
-
 //---------------------------------------------------------
 // return true if a line was read; false if not
 	bool readline(int channel) {
@@ -124,7 +120,6 @@ namespace elcano {
 		*/
 		//if (!DataAvailable)
 		//return false;
-
 
 		while (1) {
 			switch (channel) {
@@ -168,36 +163,34 @@ namespace elcano {
 	}
 	/* Function Determines crosspoint on X-axis */
 	double CrossPointX(double x1, double y1, double x2, double y2,
-										 double x3, double y3, double x4, double y4)
-	{
-	if (x1 == x2 && x3 == x4)
-		return ((x1+x2)/2.0);
-	if(x1 == x2)
-		return x1;
-	if(x3 == x4)
-		return 3;
-	
-	/* yc = (y4-y3)/(x4-x3)*(xc-x3) + y3 = (y2-y1)/(x2-x1)*(xc-x1)+y1 */
-	double slope1 = (y2-y1)/(double)(x2-x1);
-	double slope3 = (y4-y3)/(double)(x4-x3);
-	
-	if(slope3 == slope1)
-		return ((x2+x2+x3)/4.0);
-	
-	double xc = (slope3 * x3 - y3 - slope1 * x1 + y1) / (double)(slope3-slope1);
-	return xc;
+										 double x3, double y3, double x4, double y4) {
+                      
+  	if (x1 == x2 && x3 == x4)
+  		return ((x1+x2)/2.0);
+  	if(x1 == x2)
+  		return x1;
+  	if(x3 == x4)
+  		return 3;
+  	
+  	/* yc = (y4-y3)/(x4-x3)*(xc-x3) + y3 = (y2-y1)/(x2-x1)*(xc-x1)+y1 */
+  	double slope1 = (y2-y1)/(double)(x2-x1);
+  	double slope3 = (y4-y3)/(double)(x4-x3);
+  	
+  	if(slope3 == slope1)
+  		return ((x2+x2+x3)/4.0);
+  	
+  	double xc = (slope3 * x3 - y3 - slope1 * x1 + y1) / (double)(slope3-slope1);
+  	return xc;
 	}
 	
 	/* The function calculates position using Dead Reckoning
 	 */
-	void ComputePositionWithDR(Waypoint &oldData, Waypoint &newData)
-	{
+	void ComputePositionWithDR(Waypoint &oldData, Waypoint &newData) {
 	//Serial.println("millis(): " + String(millis()));
 	//Serial.print("ComputePositionWithDR::NewTime:");
 	//Serial.print(newData.time_ms);
 	//Serial.print(",OldTime:");
 	//Serial.println(oldData.time_ms);
-	
 	
 	// To check if this is new reading or the same reading
 		if ( newData.time_ms > oldData.time_ms) {
@@ -221,13 +214,13 @@ namespace elcano {
 			//Serial.println(newData.y_Pos);
 		}
 	}
+ 
 	/* This function finds fuzzy crosspoint between GPS & Dead reckoning data
 	 Waypoint &gps -> GPS input
 	 Waypoint &dr   -> Dead reckoning input
 	 Waypoint &estimated_position -> update estimated_position
 	 */
-	void FindFuzzyCrossPointXY(Waypoint &gps, Waypoint &dr, Waypoint &estimated_position)
-	{
+	void FindFuzzyCrossPointXY(Waypoint &gps, Waypoint &dr, Waypoint &estimated_position) {
 	//if GPS and DR position is the same
 	if (gps.east_mm == dr.east_mm && gps.north_mm == dr.north_mm)
 		{
@@ -236,29 +229,28 @@ namespace elcano {
 		return;
 		}
 	
-	if (abs(gps.east_mm - dr.east_mm) > abs(gps.north_mm - dr.north_mm))
-		{  // more change in east
+	if (abs(gps.east_mm - dr.east_mm) > abs(gps.north_mm - dr.north_mm)) {  // more change in east
 			//Serial.println("more east");
-			if (gps.east_mm >= dr.east_mm)
-				{  // cross point is intersection of line down from DR and line up to GPS
+			if (gps.east_mm >= dr.east_mm) {  
+			    // cross point is intersection of line down from DR and line up to GPS
 					// DR down line is from (dr->east_mm, 1) to (dr->east_mm + DR_ERROR_mm, 0)
 					// line up to GPS is from (gps->east_mm - gps->sigma_mm, 0) to (gps->east_mm, 1)
 					estimated_position.east_mm = CrossPointX(dr.east_mm,1, dr.east_mm + DR_ERROR_mm, 0,
 																										gps.east_mm - gps.sigma_mm, 0., gps.east_mm, 1);
-				}
-			else
-				{  // cross point is intersection of line down from GPS and line up to DR
+			}
+			
+			else {  // cross point is intersection of line down from GPS and line up to DR
 					estimated_position.east_mm = CrossPointX(dr.east_mm - DR_ERROR_mm,0., dr.east_mm, 1,
 																										gps.east_mm, 1,gps.east_mm + gps.sigma_mm, 0.);
-				}
+			}
+			
 			// north position is proportional to east position
-			if (gps.north_mm >= dr.north_mm)
-				{
+			if (gps.north_mm >= dr.north_mm) {
 				estimated_position.north_mm = dr.north_mm + (gps.north_mm - dr.north_mm) *
 				abs((gps.east_mm-estimated_position.east_mm)/(double)(gps.east_mm - dr.east_mm));
-				}
-				else
-					{
+				
+			}
+				else {
 					estimated_position.north_mm = gps.north_mm + (dr.north_mm - gps.north_mm) *
 					abs((gps.east_mm-estimated_position.east_mm)/(double)(gps.east_mm - dr.east_mm));
 					}

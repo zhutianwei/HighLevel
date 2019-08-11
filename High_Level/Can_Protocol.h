@@ -6,7 +6,6 @@
  */ 
 namespace elcano {
   
-
 #define RCStatus_CANID 0x50
 #define HiStatus_CANID 0x100
 #define GoalReached_CANID 0x101
