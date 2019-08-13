@@ -7,7 +7,6 @@
 
 using namespace elcano;
 
-
 Localization *myLocal;
 Pilot *myPilot;
 

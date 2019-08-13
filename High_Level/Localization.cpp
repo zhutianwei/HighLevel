@@ -1,13 +1,14 @@
 #include "Localization.h"
-
 #define mySerial Serial3
+
 Adafruit_GPS GPS(&mySerial);
 //Adafruit_L3GD20 gyro; GYRO still not working
 //#ifdef USE_I2C
+
   // The default constructor uses I2C
   Adafruit_L3GD20 gyro;
 //#else
-  // To use SPI, you have to define the pins
+ // To use SPI, you have to define the pins
  // #define GYRO_CS 4 // labeled CS
  // #define GYRO_DO 5 // labeled SA0
  // #define GYRO_DI 6  // labeled SDA
@@ -45,7 +46,7 @@ Localization::Localization(Origin &org, Waypoint &estimated_position, Waypoint &
   newPos.speed_mmPs = 0;
   
   // Try to initialise and warn if we couldn't detect the chip
-   if (!gyro.begin(gyro.L3DS20_RANGE_250DPS))
+  if (!gyro.begin(gyro.L3DS20_RANGE_250DPS))
   //if (!gyro.begin(gyro.L3DS20_RANGE_500DPS))
   //if (!gyro.begin(gyro.L3DS20_RANGE_2000DPS))
   {
@@ -119,19 +120,18 @@ bool Localization::AcquireGPS(Waypoint &gps_position) {
   return false;
 }
 
-
 /*******************************************************************************************************
  * Local_communication_with_LowLevel()
  * Receive actual speed and actual turn angle from the C2_Lowlevel 
  * board via CAN BUS message to help calculate where the trike's estimated position in
  ******************************************************************************************************/
 void Localization::Local_communication_with_LowLevel() {
- CAN.watchForRange(Actual_CANID, LowStatus_CANID);  //filter for low level communication
+  CAN.watchForRange(Actual_CANID, LowStatus_CANID);  //filter for low level communication
   
   while (CAN.available() > 0) { // check if CAN message available
     CAN.read(incoming);
     
-    if(DEBUG2)  {
+    if(DEBUG2) {
       Serial.println("Get data from (low level) ID: " + String(incoming.id, HEX));
       Serial.print("Low: " + String((int)incoming.data.low, DEC));
       Serial.println(", High: " + String((int)incoming.data.high, DEC));
@@ -139,12 +139,15 @@ void Localization::Local_communication_with_LowLevel() {
 
     if(incoming.id == Actual_CANID) {
       extractSpeed = incoming.data.low;
+      
       if  (extractSpeed >= 0) {
         newPos.speed_mmPs = extractSpeed; //upadte acutal speed from C2
       }
+      
       else
         if(DEBUG)  Serial.println("Got a negative speed from C2");
     }
+    
   else 
     if(DEBUG)  Serial.println("Did not receive actual speed, angle from C2");
   }

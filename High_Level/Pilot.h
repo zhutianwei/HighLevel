@@ -35,7 +35,6 @@ private:
   int speedIndex = 0;
   int insaneCounter = 0;
   //*********************************************************************************
-	
 	long turning_radius_mm(long speed_mmPs);
 	bool test_past_destination(int n, Waypoint &estPos);
 	bool test_approach_intersection(long turn_radius_mm, int n, Waypoint &estPos);

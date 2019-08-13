@@ -1,7 +1,6 @@
 #pragma once
 #include "Common.h"
 
-
 namespace elcano {
 
 class Planner{

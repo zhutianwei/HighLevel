@@ -7,16 +7,15 @@
 
 namespace elcano {
   
-
 class Localization {
 private:  
- // Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
+// Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
 // Set to 'true' if you want to DEBUG and listen to the raw GPS sentences.
-#define GPSECHO  false
+#define GPSECHO false
 
-//  SoftwareSerial mySerial(15, 14); //rx tx
+  // SoftwareSerial mySerial(15, 14); //rx tx
   #define GPSRATE 9600
-  //index of hardcoded gps coordinates for testing
+  // index of hardcoded gps coordinates for testing
   double gpsTest[8] = {47.760850, -122.190044, 47.9, -122, 51, -123, 50.5, -120};
   int gpsIndex = 0; //helper with array above
   bool passedInitial = false; //to hardcode GPS only first time
@@ -27,7 +26,6 @@ private:
 
   elcano::Waypoint newPos, GPS_reading;
  
-  
   /* Assign a unique ID to this sensor at the same time */
   Adafruit_LSM303_Mag_Unified mag = Adafruit_LSM303_Mag_Unified(12345);
 
@@ -36,7 +34,6 @@ private:
 
   bool got_GPS = false;
   CAN_FRAME incoming;
-
 	
 	void setup_GPS();
 	bool AcquireGPS(Waypoint &gps_position);
@@ -50,6 +47,7 @@ private:
   double getGyroYaw();
 	void findPosition(Waypoint &estimPos, bool got_GPS, Waypoint &op);
 	void initial_position(Origin &ogn, Waypoint &estimPos, Waypoint &old_pos);
+  
 public:
 	Localization(Origin &org, Waypoint &estimated_pos, Waypoint &old_pos); 
 	~Localization(){} //destructor

@@ -1,6 +1,5 @@
 #include "Pilot.h"
 
-
 namespace elcano {
 /******************************************************************************************************
  * constructor
@@ -22,7 +21,7 @@ Pilot::Pilot(Origin &org, Waypoint &estimated_pos, Waypoint &old_position) {
   output.length = MAX_CAN_FRAME_DATA_LEN_16;
   output.id = HiDrive_CANID; //Drive instructions from hilevel board
   
-  for(int i = 0; i < myPlanner->last_index_of_path; i++){
+  for(int i = 0; i < myPlanner->last_index_of_path; i++) {
     if(DEBUG3) Serial.println("Path [" + String(i) + "] East is " + String(myPlanner->path[i].east_mm));
   }
 }
